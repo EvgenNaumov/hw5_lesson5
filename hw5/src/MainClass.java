@@ -23,42 +23,33 @@ public class MainClass {
 
         ThreadGroup threadGroup = new ThreadGroup("groupCar");
 
-        for (int i = 0; i < cars.length; i++) {
-            cars[i] = new Car(race, 20 + (int) (Math.random() * 10));
+        new Thread(()->{
+            try{
 
-            final int w = i;
-
-            new Thread(()->{
-                try{
+                for (int i = 0; i < cars.length; i++) {
+                    final int w = i;
+                    cars[w] = new Car(race, 20 + (int) (Math.random() * 10));
                     new Thread(cars[w]).start();
-                    cyclicBarrier.await();
-
-//                    System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
-/*
-                    if (Thread.currentThread().getName().){
-                        placeCar.add(cars[w]);
-                    }
-
-                    if (placeCar.size()==CARS_COUNT){
-                        System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
-                    }
-*/
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+                cyclicBarrier.await();
 
-            }).start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }).start();
 
 
+        System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
 
-//            ListIterator<Stage> itrStage = race.getStages().listIterator();
-//            while (itrStage.hasNext()){
-//                itrStage.next().go(cars[w]);
-//
-//            }
+        for (int i = 0; i < cars.length; i++) {
+            final int w = i;
+            ListIterator<Stage> itrStage = race.getStages().listIterator();
+            while (itrStage.hasNext()) {
+                itrStage.next().go(cars[w]);
 
+            }
         }
-
 
 
 
